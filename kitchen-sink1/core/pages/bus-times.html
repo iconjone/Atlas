@@ -1,0 +1,342 @@
+<template>
+  <div class="page">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        <div class="title" id="title">Bus Times</div>
+      </div>
+    </div>
+    <div id="page" class="page-content ptr-content">
+      <div class="ptr-preloader">
+        <div class="preloader"></div>
+        <div class="ptr-arrow"></div>
+      </div>
+
+      <div id="busTimeline" class="timeline timeline-horizontal col-33 tablet-20">
+
+      </div>
+
+
+    </div>
+  </div>
+</template>
+<script>
+  //page.detail.route.params.route
+  return {
+    data: function() {
+      var ios = this.$theme.ios;
+      return {
+        commentsIcon: ios ? '<i class="icon f7-icons">chat_fill</i>' : '<i class="icon material-icons">message</i>',
+        sortIcon: ios ? '<i class="icon f7-icons">sort</i>' : '<i class="icon material-icons">sort</i>',
+        moreIcon: ios ? '<i class="icon f7-icons">more_vertical_round</i>' : '<i class="icon material-icons">more_vert</i>',
+        trashIcon: ios ? '<i class="icon f7-icons">trash</i>' : '<i class="icon material-icons">delete</i>',
+        composeIcon: ios ? '<i class="icon f7-icons">compose</i>' : '<i class="icon material-icons">edit</i>'
+      }
+    },
+    on: {
+      pageBeforeRemove() {
+        // var self = this;
+        // var app = self.$app;
+        // // Destroy all autocompletes
+        // diag = document.getElementsByClassName("actions-modal modal-in")[0]
+        //   app.dialog.get(diag).destroy();
+        diag = document.getElementsByClassName("actions-modal modal-in")[0]
+        if(diag != undefined){
+         diag1 = app.dialog.get(diag)
+         diag1.close()
+       }
+
+      },
+
+      pageInit: function(page) {
+        var self = this;
+        var app = self.$app;
+        var $$ = Dom7;
+        var routes =
+                '01 - Bonfire,02 - Replant,03 - Yell Practice,04 - Gig Em,05 - Bush School,06 - 12th Man,08 - Howdy,09 - Vet School,12 - Reveille,15 - Old Army,N15 - Old Army (Thur & Fri),22 - Excel,25 - Centerpole,26 - Rudder,27 Ring Dance,31 - E-Walk,34 - Fish Camp,35 - Hullabaloo,36 - Cotton Bowl,40 - Century Tree,40N - Century Tree,40S - Century Tree,47 - Rellis,12-25 - Night and Weekends,01-04 - Night and Weekends,03-05 - Night and Weekends'
+                .split(',');
+        var $ = self.$;
+        console.log(page.detail.route.params.route)
+        var load = app.dialog.preloader("Pulling Data...");
+        var title = document.getElementById("title")
+        routes.forEach(function(route) {
+          if (route.split(" ")[0] === page.detail.route.params.route)
+            title.innerHTML = route;
+        })
+
+
+
+        //    var url = 'https://script.google.com/macros/s/AKfycbxNsSlInYYgti4CyUawG8FecZCOSt69a7nIJhi9x6_BbFvhUY8i/exec?route=' + page.detail.route.params.route;
+        //app.request.json(url, function(data) {
+        async function populate() {
+          data = await busPull(page.detail.route.params.route)
+          console.log(data)
+
+          var first = true
+          var num = 0
+          if (!(isEmpty(data))) {
+
+            //console.log(data)
+            headers = Object.getOwnPropertyNames(data);
+            cTime = new Date().toLocaleTimeString()
+            console.log(cTime)
+
+
+            var divContainer = document.getElementById("busTimeline");
+            divContainer.innerHTML = "";
+
+            for (var x = 0; x < data[headers[0]].length; x++) {
+              //console.log(x)
+              var stopItem = document.createElement("div");
+              stopItem.className = "timeline-item"
+              var stopTime = document.createElement("div");
+              stopTime.className = "timeline-item-date"
+              stopTime.innerHTML = "Loop " + (x + 1)
+              var divider = document.createElement("div")
+              divider.className = "timeline-item-divider"
+              var content = document.createElement("div")
+              content.className = "timeline-item-content"
+              for (i = 0; i < headers.length; i++) {
+                if (data[headers[i]][x]["Time"] != undefined)
+                  time = data[headers[i]][x]["Time"].split(" ")
+                //  stopTime.innerHTML = time[0] + " <small>" + time[1] + "</small>"
+                var inner = document.createElement("div")
+                inner.className = "timeline-item-inner"
+                if (i != headers.length - 1)
+                  if (time[0] != "NA") {
+                    if (timeConvertor(cTime.split(" ")[0] + cTime.split(" ")[1]) > timeConvertor(time[0] + ":00" + time[1])) {
+                      inner.setAttribute("style", "background: #919191");
+                    }
+
+                    if (timeConvertor(cTime.split(" ")[0] + cTime.split(" ")[1]) < timeConvertor(time[0] + ":00" + time[1])) {
+                      inner.setAttribute("style", "background: #b54e4e;")
+                      if (first) {
+                        first = false
+                        num = x
+                        t = inner.getAttribute("class")
+                        inner.setAttribute("class", t + " elevation-24")
+                        inner.setAttribute("id", "next")
+                        content.setAttribute("id", "nextContainer")
+
+
+
+
+                      }
+                    }
+                    inner.innerHTML = "<p><small>Leave</small></p><p>" + time[0] + " <small>" + time[1] + "</small>" + "</p><p>" + headers[i].substring(1, headers[i].length) + "</p>"
+                  }
+                else {
+                  inner.innerHTML = "<p><small>Leave</small></p><p>No Data</p>"
+                } else {
+                  if (time[0] != "NA") {
+                    //Fix time converter
+
+                    //console.log(cTime.split(" ")[0])
+                    if (timeConvertor(cTime.split(" ")[0] + cTime.split(" ")[1]) < timeConvertor(time[0] + ":00" + time[1])) {
+                      inner.setAttribute("style", "background: #c11b1b");
+                      inner.setAttribute("id", "after")
+                      wut = stopItem.getAttribute("class")
+                      stopItem.setAttribute("class", wut + " itemAfter")
+                      var col = stopTime
+                      var div = document.getElementById('page');
+
+                      if (col != null && div != null) {
+
+                        if (first) {
+                          first = false
+                          num = x
+                          t = inner.getAttribute("class")
+                          inner.setAttribute("class", t + " elevation-24")
+                          inner.setAttribute("id", "next")
+                          content.setAttribute("id", "nextContainer")
+
+                        }
+
+                      }
+                    }
+                    if (timeConvertor(cTime.split(" ")[0] + cTime.split(" ")[1]) > timeConvertor(time[0] + ":00" + time[1])) {
+                      inner.setAttribute("style", "background: #919191;")
+                    }
+
+
+                    //window.location.href = '#after';
+
+                    inner.innerHTML = "<p><small>Arrive</small></p><p>" + time[0] + " <small>" + time[1] + "</small>" + "</p><p>" + headers[i].substring(1, headers[i].length) + "</p>"
+                  } else {
+
+                    inner.innerHTML = "<p><small>Arrive</small></p><p>No Data.</p>"
+                  }
+                }
+                content.appendChild(inner);
+              }
+              stopItem.appendChild(stopTime)
+              stopItem.appendChild(divider)
+              stopItem.appendChild(content)
+              divContainer.appendChild(stopItem);
+            }
+          }
+
+          console.log("done")
+          load.close();
+          var div = document.getElementById('page');
+          //div.scrollLeft = ((screen.width/3) * (num - 1));
+
+          console.log(div.scroll({
+            top: 0,
+            left: ((screen.width / 3) * (num - 1)),
+            behavior: 'smooth'
+          }))
+
+          var card = document.getElementById("next");
+          var cardC = document.getElementById("nextContainer");
+          //card.scrollIntoView({behavior: "smooth", block: "center", inline: "center"});
+          if (cardC != null)
+            cardC.scroll({
+              top: card.offsetTop,
+              left: 0,
+              behavior: 'smooth'
+            });
+
+          if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+              //  alert(position.coords.latitude + position.coords.longitude);
+            });
+          } else {
+            alert("darn no location")
+          }
+
+          if (first) {
+            console.log("here")
+            //alert("No Bus Stops Available at this time.")
+            // Vertical Buttons
+
+
+            var diag = app.actions.create({
+            //  el: "#diag",
+              buttons: [{
+                  text: 'No Bus Stops Available at this time.',
+                  label: true
+                },
+                {
+                  text: 'Select another bus route',
+                  onClick: function() {
+                    //app.dialog.alert('Button1 clicked')
+                    app.router.navigate('/')
+                  }
+                },
+                {
+                  text: 'View the time anyways',
+                },
+                // {
+                //   text: 'Cancel',
+                //   color: 'red',
+                //   onClick: function () {
+                //     app.dialog.alert('Cancel clicked')
+                //   }
+                // },
+              ]
+            });
+            diag.open()
+          }
+          //youre looking for this one vv
+        }
+        populate();
+        var $ptrContent = $$('.ptr-content');
+        // Add 'refresh' listener on it
+        $ptrContent.on('ptr:refresh', function(e) {
+          // Emulate 2s loading
+          console.log("lol")
+          // When loading done, we need to reset it
+          app.ptr.done(); // or e.detail();
+        })
+
+        function startTime() {
+  var today = new Date();
+  var h = today.getHours();
+  var m = today.getMinutes();
+  var s = today.getSeconds();
+  // add a zero in front of numbers<10
+  m = checkTime(m);
+  s = checkTime(s);
+
+  return h + ":" + m + ":" + s;
+}
+function checkTime(i) {
+  if (i < 10) {
+    i = "0" + i;
+  }
+  return i;
+}
+
+
+        function timeConvertor(time) {
+                 var PM = time.match('PM') ? true : false
+
+
+                 time = time.split(':')
+
+                 var min = time[1]
+
+
+       console.log(time[0])
+       				console.log(!PM && time[0] == "12")
+
+                 if (time[0].length != 2)
+                   time[0] = "0" + time[0]
+                 if (!PM && time[0] == "12")
+                   var hour = 0
+                 if (PM) {
+                   var hour = time[0]
+                   if (time[0] != "12")
+                     var hour = 12 + parseInt(time[0], 10)
+                   var sec = time[2].replace('PM', '')
+                 } else {
+       			if (!(!PM && time[0] == "12"))
+                   var hour = time[0]
+                   var sec = time[2].replace('AM', '')
+                 }
+
+
+
+
+                 if (time[0].length != 2)
+                   time[0] = "0" + time[0]
+
+                 return (hour + ':' + min + ':' + sec)
+        }
+
+        function isEmpty(obj) {
+          for (var key in obj) {
+            if (obj.hasOwnProperty(key))
+              return false;
+          }
+          return true;
+        }
+
+      },
+      pageAfterIn: function(page) {
+        // var div = document.getElementById('page');
+        // div.scrollLeft = 2500
+        console.log("hi")
+        document.addEventListener("backbutton", function(event) {
+          console.log("yee")
+          this.app.router.navigate('#')
+
+          return false;
+        }, false);
+
+      },
+    },
+  }
+</script>
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+</style>

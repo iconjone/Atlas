@@ -1,0 +1,157 @@
+<template>
+  <div class="page">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        <div class="title">Cards</div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="block">
+        <p>cool.</p>
+      </div>
+      <div class="block-title">Simple Cards</div>
+<div id="cards">
+
+</div>
+
+
+
+    </div>
+  </div>
+</template>
+<script>
+  //page.detail.route.params.route
+  return {
+    data: function() {
+      var ios = this.$theme.ios;
+      return {
+        commentsIcon: ios ? '<i class="icon f7-icons">chat_fill</i>' : '<i class="icon material-icons">message</i>',
+        sortIcon: ios ? '<i class="icon f7-icons">sort</i>' : '<i class="icon material-icons">sort</i>',
+        moreIcon: ios ? '<i class="icon f7-icons">more_vertical_round</i>' : '<i class="icon material-icons">more_vert</i>',
+        trashIcon: ios ? '<i class="icon f7-icons">trash</i>' : '<i class="icon material-icons">delete</i>',
+        composeIcon: ios ? '<i class="icon f7-icons">compose</i>' : '<i class="icon material-icons">edit</i>'
+      }
+    },
+    on: {
+
+      pageInit: function(page) {
+        var self = this;
+        var app = self.$app;
+        var $$ = Dom7;
+        var routes =
+                '01 - Bonfire,02 - Replant,03 - Yell Practice,04 - Gig Em,05 - Bush School,06 - 12th Man,08 - Howdy,09 - Vet School,12 - Reveille,15 - Old Army,N15 - Old Army (Thur & Fri),22 - Excel,25 - Centerpole,26 - Rudder,27 Ring Dance,31 - E-Walk,34 - Fish Camp,35 - Hullabaloo,36 - Cotton Bowl,40 - Century Tree,40N - Century Tree,40S - Century Tree,47 - Rellis,12-25 - Night and Weekends,01-04 - Night and Weekends,03-05 - Night and Weekends'
+                .split(',');
+        var $ = self.$;
+        console.log(page.detail.route.params.stopName)
+        stopName = page.detail.route.params.stopName
+        matchedRoutes = []
+        justRoutes = []
+        var load = app.dialog.preloader("Finding Routes with Stop...");
+
+
+        Promise.all(getAllBusTest()).then(function(val){
+          console.log("here")
+          var routes =
+                  '01 - Bonfire,02 - Replant,03 - Yell Practice,04 - Gig Em,05 - Bush School,06 - 12th Man,08 - Howdy,09 - Vet School,12 - Reveille,15 - Old Army,N15 - Old Army (Thur & Fri),22 - Excel,25 - Centerpole,26 - Rudder,27 Ring Dance,31 - E-Walk,34 - Fish Camp,35 - Hullabaloo,36 - Cotton Bowl,40 - Century Tree,40N - Century Tree,40S - Century Tree,47 - Rellis,12-25 - Night and Weekends,01-04 - Night and Weekends,03-05 - Night and Weekends'
+                  .split(',');
+        ret = []
+        var i = 0
+        val.forEach(function(data){
+        pack = {}
+
+          pack["Name"] = routes[i]
+          pack["Data"] = data
+          ret.push(pack)
+
+        i++
+        })
+
+        console.log(ret)
+
+        data = ret
+
+
+
+
+
+        console.log(data)
+        data.forEach(function(route) {
+        console.log(route)
+        //  console.log(route)
+        headers = Object.getOwnPropertyNames(route["Data"])
+        //  console.log(headers)
+        headers.forEach(function(name) {
+          if (name.substring(1, name.length) === stopName){
+          if (!(justRoutes.includes(route["Name"]))){
+            var match = []
+            match.push(route["Name"])
+            match.push(headers)
+            matchedRoutes.push(match)
+            justRoutes.push(route["Name"])
+          }
+        }
+        });
+
+        });
+        console.log(matchedRoutes)
+        cardSec = document.getElementById("cards")
+        matchedRoutes.forEach(function(route){
+        var link = document.createElement("a")
+        link.setAttribute("href", "/bus-times/" + route[0].split(" ")[0] + "/")
+        var card = document.createElement("div");
+        card.className = "card"
+        var cardHeader = document.createElement("div");
+        cardHeader.className = "card-header"
+        cardHeader.innerHTML=route[0]
+        var cardContent = document.createElement("div");
+        cardContent.className = "card-content card-content-padding"
+        stopStrings = ""
+        for(var i = 1; i<route[1].length; i++){
+          if(i==1)
+          stopStrings = route[1][0].substring(1,route[1][0].length)
+          stopStrings = stopStrings + ", " + route[1][i].substring(1,route[1][i].length)
+        }
+        console.log(stopStrings)
+        cardContent.innerHTML = "<p>Stops:</p><p>" + stopStrings + "</p>"
+
+        card.appendChild(cardHeader)
+        card.appendChild(cardContent)
+        link.appendChild(card)
+        cardSec.appendChild(link)
+
+
+
+
+
+        })
+        load.close()
+        })
+          // headers = Object.getOwnPropertyNames(data);
+          // cTime = new Date().toLocaleTimeString()
+
+
+//populate();
+//load.close()
+
+      },
+      pageAfterIn: function(page) {
+        // var div = document.getElementById('page');
+        // div.scrollLeft = 2500
+        console.log("hi")
+
+      },
+    },
+  }
+</script>
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+</style>

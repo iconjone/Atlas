@@ -1,0 +1,292 @@
+var options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0
+};
+
+function success(pos) {
+  var crd = pos.coords;
+
+  console.log('Your current position is:');
+  console.log(`Latitude : ${crd.latitude}`);
+  console.log(`Longitude: ${crd.longitude}`);
+  console.log(`More or less ${crd.accuracy} meters.`);
+}
+
+function error(err) {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+}
+
+navigator.geolocation.getCurrentPosition(success, error, options);
+
+function test(){
+if ("geolocation" in navigator) {
+ alert("yay");
+//console.log(navigator.geolocation)
+navigator.geolocation.getCurrentPosition(success, error, options);
+} else {
+  alert("shit");
+}
+}
+
+
+
+var locations = {}
+locations["MSC"] = {
+  lat: 30.614057,
+  lon: -96.343085
+}
+locations["Beutel"] = {
+  lat:30.615418,
+  lon:-96.342940
+}
+locations["White Creek"] = {
+  lat:30.607419,
+  lon:-96.355054
+}
+locations["Trigon"] = {
+  lat:30.614205,
+  lon:-96.338713
+}
+locations["Carter Creek Shopping Center"] = {
+  lat:30.644556,
+  lon: -96.332993
+}
+locations["Blinn College - Bldg E"] = {
+  lat:30.663220,
+  lon: -96.351957
+}
+locations["Willow Oaks"] = {
+  lat:30.646715,
+  lon: -96.333492
+}
+locations["Reveille Ranch"] = {
+  lat:30.628602,
+  lon: -96.359861
+}
+locations["Aggie Station"] = {
+  lat:30.624879,
+  lon: -96.352502
+}
+locations["The Marc"] = {
+  lat:30.618800,
+  lon: -96.315156
+}
+locations["Castlerock"] = {
+  lat:30.627374,
+  lon: -96.306434
+}
+locations["The Cambridge"] = {
+  lat:30.621258,
+  lon: -96.315985
+}
+locations["Ashburn - East"] = {
+  lat:30.632157,
+  lon: -96.322431
+}
+locations["Ashburn - West"] = {
+  lat:30.632157,
+  lon: -96.322431
+}
+locations["Laurel Ridge - West"] = {
+  lat:30.637666,
+  lon: -96.327197
+}
+locations["Brentwood"] = {
+  lat:30.606225,
+  lon: -96.313467
+}
+locations["Trails @ Wolf Pen Creek"] = {
+  lat:30.617533,
+  lon: -96.302104
+}
+locations["Redstone"] = {
+  lat:30.607952,
+  lon: -96.312699
+}
+locations["Lexington - North"] = {
+  lat:30.609017,
+  lon: -96.320485
+}
+locations["Wolf Pen Creek"] = {
+  lat:30.619900,
+  lon: -96.304296
+}
+locations["Village St"] = {
+  lat:30.610751,
+  lon: -96.320243
+}
+locations["Willowick"] = {
+  lat:30.593743,
+  lon: -96.326009
+}
+locations["University Park"] = {
+  lat:30.597506,
+  lon: -96.321154
+}
+locations["Madison Point"] = {
+  lat:30.593540,
+  lon: -96.326741
+}
+locations["Fraternity Row"] = {
+  lat:30.576077,
+  lon: -96.314400
+}
+locations["Navarro @ Pintail"] = {
+  lat:30.583597,
+  lon: -96.315240
+}
+locations["The Retreat"] = {
+  lat:30.588984,
+  lon: -96.333788
+}
+locations["Park West"] = {
+  lat:30.597746,
+  lon: -96.342986
+}
+locations["Woodsman"] = {
+  lat:30.593985,
+  lon: -96.339305
+}
+locations["U-Club"] = {
+  lat:30.595990,
+  lon: -96.336621
+}
+locations["Holleman South - OB"] = {
+  lat:30.584118,
+  lon: -96.337486
+}
+locations["Deacon - West"] = {
+  lat:30.572685,
+  lon: -96.320214
+}
+locations["Wisenbaker - East"] = {
+  lat:30.621207,
+  lon: -96.338419
+}
+locations["Blinn-RELLIS"] = {
+  lat:30.642308,
+  lon: -96.467266
+}
+locations["Commons"] = {
+  lat:30.615159,
+  lon: -96.337429
+}
+locations["Asbury Water Tower"] = {
+  lat:30.617801,
+  lon: -96.343352
+}
+locations["Reed Arena"] = {
+  lat:30.605494,
+  lon: -96.347393
+}
+locations["Old Main"] = {
+  lat:30.614537,
+  lon: -96.342427
+}
+locations["Fish Pond"] = {
+  lat:30.616416,
+  lon: -96.343560
+}
+locations["School of Public Health"] = {
+  lat:30.609377,
+  lon: -96.353790
+}
+locations["Health Science Center"] = {
+  lat:30.597776,
+  lon: -96.395345
+}
+locations["The Gardens 2"] = {
+  lat:30.628754,
+  lon: -96.342008
+}
+locations["Bush School"] = {
+  lat:30.599018,
+  lon: -96.352839
+}
+locations["Wehner N"] = {
+  lat:30.612130,
+  lon: -96.349560
+}
+locations["Wehner S"] = {
+  lat:30.611834,
+  lon: -96.348964
+}
+locations["GSC"] = {
+  lat:30.621780,
+  lon: -96.357606
+}
+locations["NCTM"] = {
+  lat:30.608418,
+  lon: -96.360444
+}
+
+
+
+async function createAllRouteSearch(pData, auto ,self){
+  data = await pData
+        // pData.then(function(data){
+        //         data.forEach(function(route){
+        //           headers = Object.getOwnPropertyNames(route["Data"])
+        //         })
+        //
+        // })
+        console.log("init")
+        stopsNames = []
+        routeMatch = []
+        data.forEach(function(route){
+                  headers = Object.getOwnPropertyNames(route["Data"])
+                  headers.forEach(function(names){
+                      stopsNames.push(names.substring(1,names.length))
+                      routeMatch.push(route["Name"])
+                  })
+                })
+
+          console.log("done")
+          console.log(stopsNames.toString())
+          console.log(routeMatch.toString())
+
+
+        console.log(stopsNames)
+
+
+                self.autocompleteStandaloneSimple1 = auto.create({
+                  openIn: 'page', //open in page
+                  openerEl: '#autocomplete-standalone1', //link that opens autocomplete
+                  closeOnSelect: true, //go back after we select something
+                  source: function(query, render) {
+                    var results = [];
+                    // if (query.length === 0) {
+                    //   render(results);
+                    //   return;
+                    // }
+                    // Find matched items
+                    for (var i = 0; i < routes.length; i++) {
+                      if (stopsNames[i].toLowerCase().indexOf(query.toLowerCase()) >= 0) results.push(stopsNames[i]);
+                    }
+                    // Render items by passing array with result items
+                    console.log(results)
+                    render(results);
+                  },
+                  on: {
+                    change: function(value) {
+                      console.log(value);
+                      // Add item text value to item-after
+                      $('#autocomplete-standalone1').find('.item-after').text(value[0]);
+                      // Add item value to input value
+                      $('#autocomplete-standalone1').find('input').val(value[0]);
+
+                      stopName = value[0]
+                      console.log(this.app.router)
+                      this.app.router.navigate('/stops/' + stopName +'/')
+                    },
+                    opened: function(query, render) {
+                      this.source("", stopsNames)
+                      console.log(this)
+                      },
+                  },
+                });
+
+
+      }
+      createAllRouteSearch(getAllBus(), auto, self)
