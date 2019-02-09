@@ -1,3 +1,9 @@
-"scripts": {
-    "start": "cross-env-shell NODE_ENV=production \"gulp ks-core && gulp server-core\""
-}
+var exec = require('child_process').exec
+
+// ...
+
+var child = exec('npm run core:prod',
+  function(err, stdout, stderr) {
+    if (err) throw err;
+    else console.log(stdout);
+});
