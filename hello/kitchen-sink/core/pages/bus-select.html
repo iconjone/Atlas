@@ -1,0 +1,124 @@
+<template>
+  <div class="page">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        <div class="title">Choose Bus Route</div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="block block-strong">
+
+        <p class="row">
+          <a href="#" class="col button button-raised" @click="openDemo2">Two groups</a>
+        </p>
+      </div>
+
+      <div class="list no-hairlines-md">
+        <div class="block-header">Dropdown With Input Expand</div>
+        <ul>
+          <li class="item-content item-input inline-label">
+            <div class="item-inner">
+              <div class="item-title item-label">Route Num</div>
+              <div class="item-input-wrap">
+                <input type="tel" placeholder="e.g 06, 6, or 12th Man" id="autocomplete-dropdown-expand"/>
+              </div>
+            </div>
+          </li>
+        </ul>
+        <p class="row">
+          <button class="col button button-big button-raised" onclick="console.log(document.getElementById('autocomplete-dropdown-expand').value);" >Go</button>
+        </p>
+      </div>
+
+
+    </div>
+  </div>
+</template>
+<script>
+return {
+  methods: {
+    openDemo2: function () {
+      var self = this;
+      self.actions2.open();
+    },
+    openActionsPopover: function () {
+      var self = this;
+      self.actionsToPopover.open();
+    },
+  },
+  on: {
+    pageBeforeRemove: function() {
+      var self = this;
+      self.actions2.destroy();
+      self.actionsToPopover.destroy();
+      self.autocompleteDropdownExpand.destroy();
+    },
+    pageInit: function(page) {
+      var self = this;
+      var app = self.$app;
+      var routes  = '01 - Bonfire,02 - Replant,03 - Yell Practice,04 - Gig Em,05 - Bush School,06 - 12th Man,08 - Howdy,09 - Vet School,12 - Reveille,15 - Old Army,N15 - Old Army (Thur & Fri),22 - Excel,25 - Centerpole,26 - Rudder,27 Ring Dance,31 - E-Walk,34 - Fish Camp,35 - Hullabaloo,36 - Cotton Bowl,40N - Century Tree,40S - Century Tree,47 - Rellis,12-25 - Night and Weekends,01-04 - Night and Weekends,03-05 - Night and Weekends'.split(',');
+      var $ = self.$;
+
+      // Dropdown with input expand
+      self.autocompleteDropdownExpand = app.autocomplete.create({
+        inputEl: '#autocomplete-dropdown-expand',
+        openIn: 'dropdown',
+        limit: 8,
+        expandInput: true, // expand input
+        source: function (query, render) {
+          var results = [];
+          if (query.length === 0) {
+            render(results);
+            return;
+          }
+          // Find matched items
+          for (var i = 0; i < routes.length; i++) {
+            if (routes[i].toLowerCase().indexOf(query.toLowerCase()) >= 0) results.push(routes[i]);
+          }
+          // Render items by passing array with result items
+          render(results);
+
+        }
+      });
+
+      function goClicked(val){
+        console.log(val)
+      }
+
+
+
+      var namesO = []
+    //  var routes  = '01 - Bonfire,02 - Replant,03 - Yell Practice,04 - Gig Em,05 - Bush School,06 - 12th Man,08 - Howdy,09 - Vet School,12 - Reveille,15 - Old Army,N15 - Old Army (Thur & Fri),22 - Excel,25 - Centerpole,26 - Rudder,27 Ring Dance,31 - E-Walk,34 - Fish Camp,35 - Hullabaloo,36 - Cotton Bowl,40N - Century Tree,40S - Century Tree,47 - Rellis,12-25 - Night and Weekends,01-04 - Night and Weekends,03-05 - Night and Weekends'.split(',');
+
+      for (x of routes)
+      namesO.push({text:"<a href='/autocomplete/'>" +x + "</a>"}) // A way to inject the link in it - need to isolate the hack from it but yea
+      // 2 Groups
+      var buttons2 = [
+        // First Group
+        namesO,
+        // Second Group
+        [
+          {
+            text: 'Cancel',
+            color: 'red'
+          }
+        ]
+      ]
+      self.actions2 = self.$app.actions.create({buttons: buttons2, grid: false, backdrop: true});
+
+
+    }
+  }
+
+
+}
+function goClicked(val){
+  console.log(val)
+}
+</script>

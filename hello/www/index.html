@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#2196f3">
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
+  <title>Framework7</title>
+  <link rel="stylesheet" href="core/css/framework7.min.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="apple-touch-icon" href="img/f7-icon-square.png">
+  <link rel="icon" href="img/f7-icon.png">
+</head>
+<body>
+  <div id="app">
+    <div class="statusbar"></div>
+
+
+    <div class="view view-main view-init ios-edges" data-url="/">
+      <div class="page">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="title sliding">Bus Router</div>
+          </div>
+        </div>
+
+
+
+
+
+        <div class="page-content">
+          <div class="block-title">Options</div>
+          <div class="block">
+
+
+
+
+            <div class="list">
+              <div class="block-header">Bus Route</div>
+              <ul>
+                <li>
+                  <a href="#" id="autocomplete-standalone" class="item-link item-content autocomplete-opener">
+                    <input type="hidden" />
+                    <div class="item-inner">
+                      <div class="item-title"> Select Bus Route</div>
+                      <div class="item-after"></div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+
+
+            <div class="list inset">
+              <ul>
+
+                <li><a href="/stopson/MSC/" class="list-button item-link">Tester</a></li>
+                        <li><a href="/stops/MSC/" class="list-button item-link">Old Online Api versions</a></li>
+
+              </ul>
+            </div>
+
+            <div class="list">
+              <div class="block-header">Select Stop</div>
+              <ul>
+                <li>
+                  <a href="#" id="autocomplete-standalone1" class="item-link item-content autocomplete-opener">
+                    <input type="hidden" />
+                    <div class="item-inner">
+                      <div class="item-title"> Select Stop</div>
+                      <div class="item-after"></div>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="core/js/framework7.min.js"></script>
+  <script src="js/routes.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>

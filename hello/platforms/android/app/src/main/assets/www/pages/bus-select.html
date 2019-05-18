@@ -1,0 +1,123 @@
+<template>
+  <div class="page">
+    <div class="navbar">
+      <div class="navbar-inner sliding">
+        <div class="left">
+          <a href="#" class="link back">
+            <i class="icon icon-back"></i>
+            <span class="ios-only">Back</span>
+          </a>
+        </div>
+        <div class="title">Choose Bus Route</div>
+      </div>
+    </div>
+    <div class="page-content">
+      <div class="block block-strong">
+
+
+
+        <div class="block-title">What Bus Route?</div>
+        <div class="block">
+          <p>Slect or search beloe to display your bus routes times</p>
+        </div>
+        <div class="list">
+          <div class="block-header">Bus Route</div>
+          <ul>
+            <li>
+              <a href="#" id="autocomplete-standalone" class="item-link item-content autocomplete-opener">
+                <input type="hidden" />
+                <div class="item-inner">
+                  <div class="item-title"> Select Bus Route</div>
+                  <div class="item-after"></div>
+                </div>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+
+      </div>
+    </div>
+</template>
+<script>
+  return {
+    methods: {
+
+    },
+    on: {
+      pageBeforeRemove: function() {
+        var self = this;
+
+        //self.autocompleteStandaloneSimple.destroy();
+      },
+      pageInit: function(page) {
+        var self = this;
+        var app = self.$app;
+        var routes =
+          '01 - Bonfire,02 - Replant,03 - Yell Practice,04 - Gig Em,05 - Bush School,06 - 12th Man,08 - Howdy,09 - Vet School,12 - Reveille,15 - Old Army,N15 - Old Army (Thur & Fri),22 - Excel,25 - Centerpole,26 - Rudder,27 Ring Dance,31 - E-Walk,34 - Fish Camp,35 - Hullabaloo,36 - Cotton Bowl,40N - Century Tree,40S - Century Tree,47 - Rellis,12-25 - Night and Weekends,01-04 - Night and Weekends,03-05 - Night and Weekends'
+          .split(',');
+        var $ = self.$;
+
+//page.detail.route.params.routeNum
+
+
+
+        self.autocompleteStandaloneSimple = app.autocomplete.create({
+          openIn: 'page', //open in page
+          openerEl: '#autocomplete-standalone', //link that opens autocomplete
+          closeOnSelect: true, //go back after we select something
+          source: function(query, render) {
+            var results = [];
+            // if (query.length === 0) {
+            //   render(results);
+            //   return;
+            // }
+            // Find matched items
+            for (var i = 0; i < routes.length; i++) {
+              if (routes[i].toLowerCase().indexOf(query.toLowerCase()) >= 0) results.push(routes[i]);
+            }
+            // Render items by passing array with result items
+            console.log(results)
+            render(results);
+          },
+          on: {
+            change: function(value) {
+              console.log(value);
+              // Add item text value to item-after
+              $('#autocomplete-standalone').find('.item-after').text(value[0]);
+              // Add item value to input value
+              $('#autocomplete-standalone').find('input').val(value[0]);
+              routeNum  = ""
+              minsplit = value[0].split("-")
+              if(minsplit.length != 2){
+                routeNum = minsplit[0] + "-" + minsplit[1]
+              }
+              else{
+                routeNum = minsplit[0]
+              }
+              routeNum = routeNum.split(" ")[0]
+              console.log(this.app.router)
+              this.app.router.navigate('/bus-times/' + routeNum +'/')
+            },
+            opened: function(query, render) {
+              this.source("", routes)
+            },
+          },
+        });
+
+
+        document.addEventListener("backbutton", function (event) {
+console.log("yee")
+this.app.router.navigate('#')
+
+  return false;
+}, false);
+
+      }
+    }
+
+
+  }
+
+
+</script>

@@ -1,0 +1,47 @@
+https://onsen.io/v2/guide/vue/
+https://onsen.io/v2/api/vue/
+https://onsenui.github.io/vue-onsenui-kitchensink/
+
+
+Run "npm run serve" to init server
+
+
+<template id="main-page">
+  <v-ons-page>
+    <v-ons-toolbar>
+      <div class="center">Choose Data Mode</div>
+    </v-ons-toolbar>
+
+    <div class="content">
+         <section style="margin: 16px">
+         <v-ons-button id="busTime" modifier="large">Bus Timings</v-ons-button>
+       </section>
+       <section style="margin: 16px">
+         <v-ons-button modifier="large">Get me There</v-ons-button>
+       </section>
+           <v-ons-speed-dial position="bottom right" direction="up"
+             :visible="spdVisible"
+             :open.sync="spdOpen"
+           >
+             <v-ons-fab>
+               <v-ons-icon icon="fa-bus-alt"></v-ons-icon>
+             </v-ons-fab>
+
+             <v-ons-speed-dial-item @click="$ons.notification.confirm('go to there?')">
+       <v-ons-icon icon="fa-clock"></v-ons-icon>
+     </v-ons-speed-dial-item>
+     <v-ons-speed-dial-item @click="$ons.notification.confirm('go to there?')">
+<v-ons-icon icon="fa-paper-plane"></v-ons-icon>
+</v-ons-speed-dial-item>
+
+
+           </v-ons-speed-dial>
+
+
+ </div>
+
+ <!-- Fixed content here -->
+
+</v-ons-page>
+
+</template>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="theme-color" content="#2196f3">
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
+  <title>Framework7</title>
+  <link rel="stylesheet" href="../../packages/core/css/framework7.min.css">
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="apple-touch-icon" href="img/f7-icon-square.png">
+  <link rel="icon" href="img/f7-icon.png">
+</head>
+
+<body>
+  <div id="app">
+    <div class="statusbar"></div>
+
+
+    <div class="view view-main view-init ios-edges" data-url="/">
+      <div class="page">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="title sliding">Bus Router</div>
+          </div>
+        </div>
+
+
+        <div class="toolbar tabbar tabbar-labels toolbar-bottom-md fab-morph-target">
+          <div class="toolbar-inner">
+            <a class="tab-link">
+              <i class="icon material-icons ios-only">today</i>
+              <i class="icon material-icons md-only">today</i>
+              <span class="tabbar-label">Bus Timings</span>
+            </a>
+            <a class="tab-link">
+              <i class="icon f7-icons ios-only">today</i>
+              <i class="icon material-icons md-only">today</i>
+              <span class="tabbar-label">Calendar</span>
+            </a>
+          </div>
+        </div>
+        <div class="fab fab-right-bottom fab-morph" data-morph-to=".toolbar.fab-morph-target">
+          <a href="#">
+            <i class="icon material-icons ios-only">directions_bus</i>
+            <i class="icon material-icons md-only">directions_bus</i>
+          </a>
+        </div>
+
+
+        <div class="page-content">
+          <div class="block-title">Options</div>
+          <div class="block">
+
+            <p class="segmented segmented-round">
+              <button class="button button-round button-outline"><a href="/bus-select/">Bus Timings</a></button>
+              <button class="button button-round button-outline"><a href="/action-sheet/">Router</a></button>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="../../packages/core/js/framework7.min.js"></script>
+  <script src="js/routes.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>
